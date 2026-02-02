@@ -1,0 +1,2211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PathFinder - Career & Education Advisor | SIH 2025</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Professional Indian Government-inspired palette */
+            --primary: #0D47A1;
+            --primary-light: #1976D2;
+            --primary-dark: #01579B;
+            --secondary: #00897B;
+            --secondary-light: #26A69A;
+            --accent: #FF6F00;
+            --accent-light: #FFB74D;
+            --bg-primary: #FAFBFC;
+            --bg-secondary: #FFFFFF;
+            --bg-card: #FFFFFF;
+            --text-primary: #1A1A2E;
+            --text-secondary: #5A5A6E;
+            --text-light: #8B8B9E;
+            --border: #E5E7EB;
+            --success: #2E7D32;
+            --warning: #F57C00;
+            --offline: #757575;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 3px rgba(13, 71, 161, 0.08);
+            --shadow-md: 0 4px 12px rgba(13, 71, 161, 0.12);
+            --shadow-lg: 0 8px 24px rgba(13, 71, 161, 0.15);
+            --shadow-xl: 0 16px 48px rgba(13, 71, 161, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Background Pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(13, 71, 161, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 137, 123, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Mobile Container */
+        .phone-frame {
+            max-width: 430px;
+            margin: 20px auto;
+            background: var(--bg-secondary);
+            border-radius: 32px;
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+            min-height: calc(100vh - 40px);
+        }
+
+        /* Status Bar */
+        .status-bar {
+            height: 44px;
+            background: var(--primary-dark);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            color: white;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-bar .time {
+            font-weight: 600;
+        }
+
+        .status-icons {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        /* Screen Container */
+        .screen {
+            display: none;
+            min-height: calc(100vh - 124px);
+            animation: fadeIn 0.4s ease;
+            position: relative;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Onboarding Screen */
+        .onboarding {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 60px 24px 40px;
+            text-align: center;
+            min-height: calc(100vh - 124px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .logo-section {
+            animation: slideDown 0.6s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .app-icon {
+            width: 100px;
+            height: 100px;
+            background: white;
+            border-radius: 24px;
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            animation: bounce 0.8s ease 0.3s;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        .app-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 32px;
+            font-weight: 400;
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+        .app-tagline {
+            font-size: 16px;
+            opacity: 0.95;
+            margin-bottom: 8px;
+        }
+
+        .sih-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-top: 12px;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .feature-list {
+            margin: 40px 0;
+            animation: fadeIn 0.8s ease 0.5s both;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+            text-align: left;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 16px;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .feature-text h3 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .feature-text p {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .language-selector {
+            margin-top: 32px;
+            animation: fadeIn 1s ease 0.7s both;
+        }
+
+        .language-selector label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 12px;
+            opacity: 0.95;
+        }
+
+        .language-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .lang-btn {
+            background: rgba(255,255,255,0.15);
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 12px 8px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .lang-btn:hover, .lang-btn.selected {
+            background: white;
+            color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        /* Buttons */
+        .btn {
+            width: 100%;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:active::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-primary {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary {
+            background: var(--primary);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Profile Setup */
+        .profile-setup {
+            padding: 24px;
+        }
+
+        .header {
+            margin-bottom: 32px;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .header h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 28px;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: var(--border);
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+            transition: width 0.4s ease;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+            background: var(--bg-card);
+        }
+
+        .input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(13, 71, 161, 0.1);
+        }
+
+        .select-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .select-card {
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .select-card:hover {
+            border-color: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        .select-card.selected {
+            border-color: var(--primary);
+            background: rgba(13, 71, 161, 0.05);
+        }
+
+        .select-card .icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .select-card .title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .chip-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .chip {
+            padding: 10px 18px;
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 24px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .chip:hover {
+            border-color: var(--primary-light);
+        }
+
+        .chip.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Dashboard */
+        .dashboard {
+            background: var(--bg-primary);
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 24px 24px 80px;
+            border-radius: 0 0 32px 32px;
+            position: relative;
+        }
+
+        .user-greeting {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .greeting h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .greeting p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .profile-pic {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--primary);
+            box-shadow: var(--shadow-md);
+        }
+
+        .search-bar {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 14px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .search-bar input {
+            flex: 1;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 15px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .search-bar input::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .search-bar input:focus {
+            outline: none;
+        }
+
+        .quick-actions {
+            position: absolute;
+            left: 24px;
+            right: 24px;
+            bottom: -40px;
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: var(--shadow-lg);
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .quick-action {
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .quick-action:active {
+            transform: scale(0.95);
+        }
+
+        .quick-action-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary-light), var(--secondary-light));
+            border-radius: 12px;
+            margin: 0 auto 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: white;
+        }
+
+        .quick-action span {
+            font-size: 11px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            display: block;
+            line-height: 1.2;
+        }
+
+        .dashboard-content {
+            padding: 60px 24px 24px;
+        }
+
+        .section {
+            margin-bottom: 32px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .view-all {
+            font-size: 13px;
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 16px;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border);
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 12px;
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary-light), var(--secondary-light));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+        }
+
+        .card-badge {
+            background: var(--accent-light);
+            color: var(--text-primary);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .card h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        .card p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+        }
+
+        .match-score {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .arrow-link {
+            color: var(--primary);
+            font-size: 18px;
+        }
+
+        /* AI Insights Card */
+        .ai-card {
+            background: linear-gradient(135deg, #6A11CB 0%, #2575FC 100%);
+            color: white;
+            border: none;
+        }
+
+        .ai-card h3, .ai-card p {
+            color: white;
+        }
+
+        .ai-card .card-footer {
+            border-top-color: rgba(255,255,255,0.2);
+        }
+
+        .ai-card .arrow-link {
+            color: white;
+        }
+
+        /* Stream/Path Cards */
+        .path-cards {
+            display: grid;
+            gap: 12px;
+        }
+
+        .path-card {
+            background: white;
+            border-radius: 14px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 2px solid var(--border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .path-card:hover {
+            border-color: var(--primary);
+            transform: translateX(4px);
+        }
+
+        .path-card.selected {
+            border-color: var(--primary);
+            background: rgba(13, 71, 161, 0.05);
+        }
+
+        .path-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--primary-light), var(--secondary-light));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .path-info h3 {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .path-info p {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .path-match {
+            margin-left: auto;
+            text-align: center;
+        }
+
+        .match-percentage {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--success);
+            display: block;
+        }
+
+        .match-label {
+            font-size: 10px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* College List */
+        .college-card {
+            display: flex;
+            gap: 16px;
+        }
+
+        .college-logo {
+            width: 64px;
+            height: 64px;
+            background: var(--bg-primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            flex-shrink: 0;
+            border: 2px solid var(--border);
+        }
+
+        .college-info {
+            flex: 1;
+        }
+
+        .college-tag {
+            display: inline-block;
+            background: var(--success);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .college-meta {
+            display: flex;
+            gap: 16px;
+            margin-top: 8px;
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .college-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: sticky;
+            bottom: 0;
+            background: white;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0 20px;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.05);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 12px;
+        }
+
+        .nav-item:hover {
+            background: var(--bg-primary);
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-item .icon {
+            font-size: 24px;
+        }
+
+        .nav-item span {
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        /* Offline Indicator */
+        .offline-banner {
+            background: var(--offline);
+            color: white;
+            padding: 12px 24px;
+            text-align: center;
+            font-size: 13px;
+            display: none;
+        }
+
+        .offline-banner.show {
+            display: block;
+        }
+
+        /* AI Flow Screen */
+        .ai-flow {
+            padding: 24px;
+            background: white;
+        }
+
+        .flow-diagram {
+            background: var(--bg-primary);
+            border-radius: 16px;
+            padding: 24px;
+            margin: 24px 0;
+        }
+
+        .flow-step {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .flow-step:last-child {
+            margin-bottom: 0;
+        }
+
+        .flow-number {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .flow-content h4 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .flow-content p {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .flow-arrow {
+            text-align: center;
+            color: var(--primary);
+            font-size: 24px;
+            margin: -12px 0;
+        }
+
+        .insight-box {
+            background: linear-gradient(135deg, rgba(106, 17, 203, 0.1), rgba(37, 117, 252, 0.1));
+            border-left: 4px solid var(--primary);
+            padding: 16px;
+            border-radius: 12px;
+            margin-top: 24px;
+        }
+
+        .insight-box h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .insight-box ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .insight-box li {
+            font-size: 13px;
+            color: var(--text-secondary);
+            padding: 6px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .insight-box li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        /* Settings Screen */
+        .settings {
+            background: var(--bg-primary);
+        }
+
+        .settings-header {
+            background: white;
+            padding: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .settings-list {
+            padding: 16px;
+        }
+
+        .settings-group {
+            background: white;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .settings-item {
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .settings-item:last-child {
+            border-bottom: none;
+        }
+
+        .settings-item:hover {
+            background: var(--bg-primary);
+        }
+
+        .settings-item-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .settings-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .settings-text h4 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .settings-text p {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .toggle {
+            width: 48px;
+            height: 28px;
+            background: var(--border);
+            border-radius: 14px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .toggle.active {
+            background: var(--success);
+        }
+
+        .toggle::after {
+            content: '';
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: left 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .toggle.active::after {
+            left: 22px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .phone-frame {
+                margin: 0;
+                border-radius: 0;
+                min-height: 100vh;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Notification Dot */
+        .notification-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            border: 2px solid white;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <span class="time">9:41</span>
+            <div class="status-icons">
+                <span>📶</span>
+                <span>📡</span>
+                <span>🔋</span>
+            </div>
+        </div>
+
+        <!-- Offline Banner -->
+        <div class="offline-banner" id="offlineBanner">
+            ⚠️ You're offline - Cached content available
+        </div>
+
+        <!-- Screen 1: Onboarding -->
+        <div class="screen active" id="onboarding">
+            <div class="onboarding">
+                <div class="logo-section">
+                    <div class="app-icon">🎓</div>
+                    <h1 class="app-title">PathFinder</h1>
+                    <p class="app-tagline">Your Personalized Career & Education Guide</p>
+                    <div class="sih-badge">HAPPY LEARNING</div>
+                </div>
+
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <div class="feature-icon">🧭</div>
+                        <div class="feature-text">
+                            <h3>Personalized Guidance</h3>
+                            <p>AI-powered recommendations based on your interests</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🏛️</div>
+                        <div class="feature-text">
+                            <h3>Government Colleges</h3>
+                            <p>Find nearby institutions with course details</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">💰</div>
+                        <div class="feature-text">
+                            <h3>Scholarships & Schemes</h3>
+                            <p>Access all government benefits in one place</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">📶</div>
+                        <div class="feature-text">
+                            <h3>Works Offline</h3>
+                            <p>Access cached content without internet</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="language-selector">
+                    <label>Choose Your Preferred Language</label>
+                    <div class="language-grid">
+                        <button class="lang-btn selected" data-lang="en">English</button>
+                        <button class="lang-btn" data-lang="hi">हिंदी</button>
+                        <button class="lang-btn" data-lang="ta">தமிழ்</button>
+                        <button class="lang-btn" data-lang="te">తెలుగు</button>
+                        <button class="lang-btn" data-lang="bn">বাংলা</button>
+                        <button class="lang-btn" data-lang="mr">मराठी</button>
+                    </div>
+                    <button class="btn btn-primary" onclick="navigateTo('profile')">Get Started →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 2: Profile Setup -->
+        <div class="screen" id="profile">
+            <div class="profile-setup">
+                <div class="header">
+                    <button class="back-btn" onclick="navigateTo('onboarding')">←</button>
+                    <h1>Create Your Profile</h1>
+                    <p>Help us understand you better</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 33%"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>What's your name?</label>
+                    <input type="text" class="input" placeholder="Enter your name" value="Priya">
+                </div>
+
+                <div class="form-group">
+                    <label>Your Education Level</label>
+                    <div class="select-grid">
+                        <div class="select-card" onclick="selectCard(this)">
+                            <div class="icon">📚</div>
+                            <div class="title">Class 10th</div>
+                        </div>
+                        <div class="select-card selected" onclick="selectCard(this)">
+                            <div class="icon">🎓</div>
+                            <div class="title">Class 12th</div>
+                        </div>
+                        <div class="select-card" onclick="selectCard(this)">
+                            <div class="icon">🏫</div>
+                            <div class="title">Graduation</div>
+                        </div>
+                        <div class="select-card" onclick="selectCard(this)">
+                            <div class="icon">✅</div>
+                            <div class="title">Completed</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Your Interests (Select multiple)</label>
+                    <div class="chip-group">
+                        <div class="chip selected" onclick="toggleChip(this)">💻 Technology</div>
+                        <div class="chip" onclick="toggleChip(this)">🎨 Arts & Design</div>
+                        <div class="chip selected" onclick="toggleChip(this)">📊 Business</div>
+                        <div class="chip" onclick="toggleChip(this)">⚕️ Healthcare</div>
+                        <div class="chip" onclick="toggleChip(this)">⚖️ Law</div>
+                        <div class="chip" onclick="toggleChip(this)">🔬 Science</div>
+                        <div class="chip" onclick="toggleChip(this)">📝 Writing</div>
+                        <div class="chip" onclick="toggleChip(this)">🎭 Media</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Your Location (for nearby colleges)</label>
+                    <input type="text" class="input" placeholder="Enter your city" value="Mumbai">
+                </div>
+
+                <button class="btn btn-secondary" onclick="navigateTo('dashboard')" style="margin-top: 24px;">
+                    Continue to Dashboard →
+                </button>
+            </div>
+        </div>
+
+        <!-- Screen 3: Dashboard -->
+        <div class="screen" id="dashboard">
+            <div class="dashboard">
+                <div class="dashboard-header">
+                    <div class="user-greeting">
+                        <div class="greeting">
+                            <h2>Hello, Priya! 👋</h2>
+                            <p>Ready to explore your future?</p>
+                        </div>
+                        <div class="profile-pic" onclick="navigateTo('settings')">P</div>
+                    </div>
+                    <div class="search-bar">
+                        <span>🔍</span>
+                        <input type="text" placeholder="Search careers, colleges, courses...">
+                    </div>
+                    <div class="quick-actions">
+                        <div class="quick-action" onclick="navigateTo('after12th')">
+                            <div class="quick-action-icon">🎯</div>
+                            <span>After 12th</span>
+                        </div>
+                        <div class="quick-action" onclick="navigateTo('colleges')">
+                            <div class="quick-action-icon">🏛️</div>
+                            <span>Colleges</span>
+                        </div>
+                        <div class="quick-action" onclick="navigateTo('scholarships')">
+                            <div class="quick-action-icon">💰</div>
+                            <span>Scholarships</span>
+                        </div>
+                        <div class="quick-action" onclick="navigateTo('skills')">
+                            <div class="quick-action-icon">📈</div>
+                            <span>Skills</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-content">
+                    <div class="section">
+                        <div class="section-header">
+                            <h2 class="section-title">AI Recommendations</h2>
+                            <a class="view-all" onclick="navigateTo('aiFlow')">View All →</a>
+                        </div>
+                        <div class="card ai-card" onclick="navigateTo('aiFlow')">
+                            <div class="card-header">
+                                <div class="card-icon">🤖</div>
+                            </div>
+                            <h3>Your Personalized Career Path</h3>
+                            <p>Based on your interests in Technology & Business, we've analyzed the best career paths for you.</p>
+                            <div class="card-footer">
+                                <div class="match-score">
+                                    <span>✨</span>
+                                    <span>AI Powered Analysis</span>
+                                </div>
+                                <span class="arrow-link">→</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <div class="section-header">
+                            <h2 class="section-title">Top Career Matches</h2>
+                            <a class="view-all" onclick="navigateTo('after12th')">See All →</a>
+                        </div>
+                        <div class="card" onclick="navigateTo('after12th')">
+                            <div class="card-header">
+                                <div class="card-icon">💻</div>
+                                <div class="card-badge">95% Match</div>
+                            </div>
+                            <h3>Computer Science Engineering</h3>
+                            <p>Build software, apps, and digital solutions. High demand with excellent growth opportunities.</p>
+                            <div class="card-footer">
+                                <div class="match-score">
+                                    <span>⭐</span>
+                                    <span>Best Match for You</span>
+                                </div>
+                                <span class="arrow-link">→</span>
+                            </div>
+                        </div>
+                        <div class="card" onclick="navigateTo('after12th')">
+                            <div class="card-header">
+                                <div class="card-icon">📊</div>
+                                <div class="card-badge">88% Match</div>
+                            </div>
+                            <h3>Business Administration (BBA)</h3>
+                            <p>Learn management, finance, and entrepreneurship. Perfect for future business leaders.</p>
+                            <div class="card-footer">
+                                <div class="match-score">
+                                    <span>💼</span>
+                                    <span>Strong Career Growth</span>
+                                </div>
+                                <span class="arrow-link">→</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <div class="section-header">
+                            <h2 class="section-title">Nearby Colleges</h2>
+                            <a class="view-all" onclick="navigateTo('colleges')">View All →</a>
+                        </div>
+                        <div class="card college-card" onclick="navigateTo('colleges')">
+                            <div class="college-logo">🏛️</div>
+                            <div class="college-info">
+                                <span class="college-tag">GOVT</span>
+                                <h3>IIT Bombay</h3>
+                                <p>Computer Science, Electrical, Mechanical</p>
+                                <div class="college-meta">
+                                    <span>📍 15 km away</span>
+                                    <span>⭐ 4.8/5</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card college-card" onclick="navigateTo('colleges')">
+                            <div class="college-logo">🎓</div>
+                            <div class="college-info">
+                                <span class="college-tag">GOVT</span>
+                                <h3>Mumbai University</h3>
+                                <p>Arts, Commerce, Science, Law</p>
+                                <div class="college-meta">
+                                    <span>📍 8 km away</span>
+                                    <span>⭐ 4.5/5</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section" style="padding-bottom: 80px;">
+                        <div class="section-header">
+                            <h2 class="section-title">Scholarships for You</h2>
+                            <a class="view-all" onclick="navigateTo('scholarships')">View All →</a>
+                        </div>
+                        <div class="card" onclick="navigateTo('scholarships')">
+                            <div class="card-header">
+                                <div class="card-icon">💰</div>
+                                <div class="card-badge">Active</div>
+                            </div>
+                            <h3>PM Scholarship Scheme</h3>
+                            <p>Merit-based scholarship for college students. Up to ₹25,000 per year.</p>
+                            <div class="card-footer">
+                                <div class="match-score">
+                                    <span>✅</span>
+                                    <span>You're Eligible</span>
+                                </div>
+                                <span class="arrow-link">→</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bottom-nav">
+                <div class="nav-item active" onclick="navigateTo('dashboard')">
+                    <span class="icon">🏠</span>
+                    <span>Home</span>
+                </div>
+                <div class="nav-item" onclick="navigateTo('after12th')">
+                    <span class="icon">🎯</span>
+                    <span>Explore</span>
+                </div>
+                <div class="nav-item" onclick="navigateTo('scholarships')">
+                    <span class="icon">💰</span>
+                    <span>Benefits</span>
+                </div>
+                <div class="nav-item" onclick="navigateTo('skills')">
+                    <span class="icon">📚</span>
+                    <span>Skills</span>
+                </div>
+                <div class="nav-item" onclick="navigateTo('settings')">
+                    <span class="icon">⚙️</span>
+                    <span>Settings</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 4: After 12th Guidance -->
+        <div class="screen" id="after12th">
+            <div class="profile-setup">
+                <div class="header">
+                    <button class="back-btn" onclick="navigateTo('dashboard')">←</button>
+                    <h1>After 12th Guidance</h1>
+                    <p>Explore your career path options</p>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">Recommended Streams</h2>
+                    </div>
+                    <div class="path-cards">
+                        <div class="path-card selected">
+                            <div class="path-icon">💻</div>
+                            <div class="path-info">
+                                <h3>Engineering & Technology</h3>
+                                <p>Software, Hardware, AI, Robotics</p>
+                            </div>
+                            <div class="path-match">
+                                <span class="match-percentage">95%</span>
+                                <span class="match-label">Match</span>
+                            </div>
+                        </div>
+                        <div class="path-card">
+                            <div class="path-icon">📊</div>
+                            <div class="path-info">
+                                <h3>Business & Management</h3>
+                                <p>BBA, Commerce, Entrepreneurship</p>
+                            </div>
+                            <div class="path-match">
+                                <span class="match-percentage">88%</span>
+                                <span class="match-label">Match</span>
+                            </div>
+                        </div>
+                        <div class="path-card">
+                            <div class="path-icon">🎨</div>
+                            <div class="path-info">
+                                <h3>Design & Creative Arts</h3>
+                                <p>Graphics, UX/UI, Animation</p>
+                            </div>
+                            <div class="path-match">
+                                <span class="match-percentage">72%</span>
+                                <span class="match-label">Match</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">Top Courses for You</h2>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">💻</div>
+                        </div>
+                        <h3>B.Tech in Computer Science</h3>
+                        <p>4 years • Government colleges available • High placement rates</p>
+                        <div class="card-footer">
+                            <div class="match-score">
+                                <span>🎯</span>
+                                <span>Best Career Prospects</span>
+                            </div>
+                            <span class="arrow-link">→</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">🤖</div>
+                        </div>
+                        <h3>B.Tech in AI & Data Science</h3>
+                        <p>4 years • Emerging field • Excellent growth potential</p>
+                        <div class="card-footer">
+                            <div class="match-score">
+                                <span>🚀</span>
+                                <span>Future-Ready Career</span>
+                            </div>
+                            <span class="arrow-link">→</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">Entrance Exams</h2>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">📝</div>
+                            <div class="card-badge">Upcoming</div>
+                        </div>
+                        <h3>JEE Main 2026</h3>
+                        <p>For admission to IITs, NITs, and other engineering colleges</p>
+                        <div class="card-footer">
+                            <div class="match-score">
+                                <span>📅</span>
+                                <span>Jan & April 2026</span>
+                            </div>
+                            <span class="arrow-link">→</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-secondary" onclick="navigateTo('colleges')" style="margin-top: 24px; margin-bottom: 80px;">
+                    View Colleges Near You →
+                </button>
+            </div>
+
+            <div class="bottom-nav">
+                <div class="nav-item" onclick="navigateTo('dashboard')">
+                    <span class="icon">🏠</span>
+                    <span>Home</span>
+                </div>
+                <div class="nav-item active" onclick="navigateTo('after12th')">
+                    <span class="icon">🎯</span>
+                    <span>Explore</span>
+                </div>
+                <div class="nav-item" onclick="navigateTo('scholarships')">
+                    <span class="icon">💰</span>
+                    <span>Benefits</span>
+                </div>
+                <div class="nav-item" onclick="navigateTo('skills')">
+                    <span class="icon">📚</span>
+                    <span>Skills</span>
+                </div>
+                <div class="nav-item" onclick="navigateTo('settings')">
+                    <span class="icon">⚙️</span>
+                    <span>Settings</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 5: Colleges -->
+        <div class="screen" id="colleges">
+            <div class="profile-setup">
+                <div class="header">
+                    <button class="back-btn" onclick="navigateTo('dashboard')">←</button>
+                    <h1>Government Colleges</h1>
+                    <p>Near Mumbai • Filtered for your profile</p>
+                </div>
+
+                <div class="section">
+                    <div class="card college-card">
+                        <div class="college-logo">🏛️</div>
+                        <div class="college-info">
+                            <span class="college-tag">GOVT</span>
+                            <h3>IIT Bombay</h3>
+                            <p>Top-ranked engineering institution</p>
+                            <div class="college-meta">
+                                <span>📍 15 km</span>
+                                <span>⭐ 4.8/5</span>
+                                <span>👥 8,000+</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card college-card">
+                        <div class="college-logo">🎓</div>
+                        <div class="college-info">
+                            <span class="college-tag">GOVT</span>
+                            <h3>VJTI Mumbai</h3>
+                            <p>Veermata Jijabai Technical Institute</p>
+                            <div class="college-meta">
+                                <span>📍 12 km</span>
+                                <span>⭐ 4.6/5</span>
+                                <span>👥 3,500+</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card college-card">
+                        <div class="college-logo">🏫</div>
+                        <div class="college-info">
+                            <span class="college-tag">GOVT</span>
+                            <h3>Mumbai University</h3>
+                            <p>Multi-disciplinary state university</p>
+                            <div class="college-meta">
+                                <span>📍 8 km</span>
+                                <span>⭐ 4.5/5</span>
+                                <span>👥 15,000+</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card college-card">
+                        <div class="college-logo">🎯</div>
+                        <div class="college-info">
+                            <span class="college-tag">GOVT</span>
+                            <h3>SIES College</h3>
+                            <p>Science, Commerce & Arts programs</p>
+                            <div class="college-meta">
+                                <span>📍 6 km</span>
+                                <span>⭐ 4.4/5</span>
+                                <span>👥 5,000+</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-outline" style="margin-top: 24px; margin-bottom: 80px;">
+                    Load More Colleges
+                </button>
+            </div>
+
+            <div class="bottom-nav">
+                <div class="nav-item" onclick="navigateTo('dashboard')">
+                    <span class="icon">🏠</span>
+                    <span>Home</span>
+                </div>
+                <div class="nav-item" onclick="navigateTo('after12th')">
+                    <span class="icon">🎯</span>
+                    <span>Explore</span>
+                </div>
+                <div class="nav-item" onclick="navigateTo('scholarships')">
+                    <span class="icon">💰</span>
+                    <span>Benefits</span>
+                </div>
+                <div class="nav-item" onclick="navigateTo('skills')">
+                    <span class="icon">📚</span>
+                    <span>Skills</span>
+                </div>
+                <div class="nav-item" onclick="navigateTo('settings')">
+                    <span class="icon">⚙️</span>
+                    <span>Settings</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 6: Scholarships -->
+        <div class="screen" id="scholarships">
+            <div class="profile-setup">
+                <div class="header">
+                    <button class="back-btn" onclick="navigateTo('dashboard')">←</button>
+                    <h1>Scholarships & Schemes</h1>
+                    <p>Government benefits you're eligible for</p>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">Active Scholarships</h2>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">💰</div>
+                            <div class="card-badge">✅ Eligible</div>
+                        </div>
+                        <h3>PM Scholarship Scheme</h3>
+                        <p>Merit-based scholarship • ₹25,000/year • Apply by March 2026</p>
+                        <div class="card-footer">
+                            <div class="match-score">
+                                <span>📅</span>
+                                <span>Deadline: Mar 31</span>
+                            </div>
+                            <span class="arrow-link">→</span>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">🎓</div>
+                            <div class="card-badge">✅ Eligible</div>
+                        </div>
+                        <h3>National Scholarship Portal</h3>
+                        <p>Multiple schemes • Based on merit & income • ₹10,000-50,000</p>
+                        <div class="card-footer">
+                            <div class="match-score">
+                                <span>🌟</span>
+                                <span>Multiple Options</span>
+                            </div>
+                            <span class="arrow-link">→</span>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">👩‍🎓</div>
+                            <div class="card-badge">✅ Eligible</div>
+                        </div>
+                        <h3>State Merit Scholarship</h3>
+                        <p>Maharashtra Government • Top 10% students • ₹15,000/year</p>
+                        <div class="card-footer">
+                            <div class="match-score">
+                                <span>📊</span>
+                                <span>Merit-based</span>
+                            </div>
+                            <span class="arrow-link">→</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">Other Government Schemes</h2>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">💼</div>
+                        </div>
+                        <h3>Skill India Program</h3>
+                        <p>Free skill training • Certification • Job placement assistance</p>
+                        <div class="card-footer">
+                            <div class="match-score">
+                                <span>🎯</span>
+                                <span>Career Boost</span>
+                            </div>
+                            <span class="arrow-link">→</span>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">💻</div>
+                        </div>
+                        <h3>Digital India Internship</h3>
+                        <p>Government internship program • Stipend included • Certificate</p>
+                        <div class="card-footer">
+                            <div class="match-score">
+                                <span>⭐</span>
+                                <span>Experience Builder</span>
+                            </div>
+                            <span class="arrow-link">→</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="padding-bottom: 80px;"></div>
+            </div>
+
+            <div class="bottom-nav">
+                <div class="nav-item" onclick="navigateTo('dashboard')">
+                    <span class="icon">🏠</span>
+                    <span>Home</span>
+                </div>
+                <div class="nav-item" onclick="navigateTo('after12th')">
+                    <span class="icon">🎯</span>
+                    <span>Explore</span>
+                </div>
+                <div class="nav-item active" onclick="navigateTo('scholarships')">
+                    <span class="icon">💰</span>
+                    <span>Benefits</span>
+                </div>
+                <div class="nav-item" onclick="navigateTo('skills')">
+                    <span class="icon">📚</span>
+                    <span>Skills</span>
+                </div>
+                <div class="nav-item" onclick="navigateTo('settings')">
+                    <span class="icon">⚙️</span>
+                    <span>Settings</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 7: Skills & Upskilling -->
+        <div class="screen" id="skills">
+            <div class="profile-setup">
+                <div class="header">
+                    <button class="back-btn" onclick="navigateTo('dashboard')">←</button>
+                    <h1>Skill Development</h1>
+                    <p>Recommended courses & certifications</p>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">Trending Skills for You</h2>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">💻</div>
+                            <div class="card-badge">Free</div>
+                        </div>
+                        <h3>Python Programming</h3>
+                        <p>NPTEL Course • 12 weeks • Certificate available • Beginner friendly</p>
+                        <div class="card-footer">
+                            <div class="match-score">
+                                <span>🎯</span>
+                                <span>High Demand Skill</span>
+                            </div>
+                            <span class="arrow-link">→</span>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">🤖</div>
+                            <div class="card-badge">Free</div>
+                        </div>
+                        <h3>AI & Machine Learning Basics</h3>
+                        <p>IIT Madras • 8 weeks • Government certified • Online mode</p>
+                        <div class="card-footer">
+                            <div class="match-score">
+                                <span>🚀</span>
+                                <span>Future-Ready</span>
+                            </div>
+                            <span class="arrow-link">→</span>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">📊</div>
+                            <div class="card-badge">Free</div>
+                        </div>
+                        <h3>Digital Marketing Fundamentals</h3>
+                        <p>NIESBUD • 6 weeks • Practical projects • Job-oriented</p>
+                        <div class="card-footer">
+                            <div class="match-score">
+                                <span>💼</span>
+                                <span>Career Booster</span>
+                            </div>
+                            <span class="arrow-link">→</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">Certification Programs</h2>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">🏆</div>
+                        </div>
+                        <h3>Google IT Support Certificate</h3>
+                        <p>Professional certification • 6 months • Government subsidy available</p>
+                        <div class="card-footer">
+                            <div class="match-score">
+                                <span>✨</span>
+                                <span>Industry Recognized</span>
+                            </div>
+                            <span class="arrow-link">→</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="padding-bottom: 80px;"></div>
+            </div>
+
+            <div class="bottom-nav">
+                <div class="nav-item" onclick="navigateTo('dashboard')">
+                    <span class="icon">🏠</span>
+                    <span>Home</span>
+                </div>
+                <div class="nav-item" onclick="navigateTo('after12th')">
+                    <span class="icon">🎯</span>
+                    <span>Explore</span>
+                </div>
+                <div class="nav-item" onclick="navigateTo('scholarships')">
+                    <span class="icon">💰</span>
+                    <span>Benefits</span>
+                </div>
+                <div class="nav-item active" onclick="navigateTo('skills')">
+                    <span class="icon">📚</span>
+                    <span>Skills</span>
+                </div>
+                <div class="nav-item" onclick="navigateTo('settings')">
+                    <span class="icon">⚙️</span>
+                    <span>Settings</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 8: AI Flow -->
+        <div class="screen" id="aiFlow">
+            <div class="ai-flow">
+                <div class="header">
+                    <button class="back-btn" onclick="navigateTo('dashboard')">←</button>
+                    <h1>AI Recommendation Engine</h1>
+                    <p>How we personalize your career path</p>
+                </div>
+
+                <div class="flow-diagram">
+                    <div class="flow-step">
+                        <div class="flow-number">1</div>
+                        <div class="flow-content">
+                            <h4>Data Collection</h4>
+                            <p>Your profile, interests, education level, location, and preferences</p>
+                        </div>
+                    </div>
+                    <div class="flow-arrow">↓</div>
+                    
+                    <div class="flow-step">
+                        <div class="flow-number">2</div>
+                        <div class="flow-content">
+                            <h4>AI Analysis</h4>
+                            <p>TensorFlow Lite processes your data against career success patterns</p>
+                        </div>
+                    </div>
+                    <div class="flow-arrow">↓</div>
+                    
+                    <div class="flow-step">
+                        <div class="flow-number">3</div>
+                        <div class="flow-content">
+                            <h4>Pattern Matching</h4>
+                            <p>Compare with thousands of successful career paths from government data</p>
+                        </div>
+                    </div>
+                    <div class="flow-arrow">↓</div>
+                    
+                    <div class="flow-step">
+                        <div class="flow-number">4</div>
+                        <div class="flow-content">
+                            <h4>Personalized Output</h4>
+                            <p>Career suggestions, colleges, scholarships tailored specifically for you</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="insight-box">
+                    <h4>Why Computer Science is recommended for you:</h4>
+                    <ul>
+                        <li>Strong interest in Technology (indicated in profile)</li>
+                        <li>High aptitude match based on your preferences</li>
+                        <li>95% of similar profiles found success in this field</li>
+                        <li>Excellent job market in Mumbai region</li>
+                        <li>Multiple government colleges nearby offering this course</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h3 style="margin-bottom: 16px;">Data Sources</h3>
+                    <div class="card">
+                        <h3>🏛️ Government Verified Data</h3>
+                        <p>All college & scholarship data sourced from:</p>
+                        <ul style="margin-top: 8px; padding-left: 20px; font-size: 13px; color: var(--text-secondary);">
+                            <li>Ministry of Education</li>
+                            <li>National Scholarship Portal</li>
+                            <li>AICTE Database</li>
+                            <li>UGC Recognized Institutions</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <button class="btn btn-secondary" onclick="navigateTo('dashboard')" style="margin-top: 24px; margin-bottom: 80px;">
+                    Back to Dashboard
+                </button>
+            </div>
+
+            <div class="bottom-nav">
+                <div class="nav-item" onclick="navigateTo('dashboard')">
+                    <span class="icon">🏠</span>
+                    <span>Home</span>
+                </div>
+                <div class="nav-item" onclick="navigateTo('after12th')">
+                    <span class="icon">🎯</span>
+                    <span>Explore</span>
+                </div>
+                <div class="nav-item" onclick="navigateTo('scholarships')">
+                    <span class="icon">💰</span>
+                    <span>Benefits</span>
+                </div>
+                <div class="nav-item" onclick="navigateTo('skills')">
+                    <span class="icon">📚</span>
+                    <span>Skills</span>
+                </div>
+                <div class="nav-item" onclick="navigateTo('settings')">
+                    <span class="icon">⚙️</span>
+                    <span>Settings</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 9: Settings -->
+        <div class="screen" id="settings">
+            <div class="settings">
+                <div class="settings-header">
+                    <button class="back-btn" onclick="navigateTo('dashboard')">←</button>
+                    <h1>Settings & Help</h1>
+                </div>
+
+                <div class="settings-list">
+                    <div class="settings-group">
+                        <div class="settings-item">
+                            <div class="settings-item-left">
+                                <div class="settings-icon">👤</div>
+                                <div class="settings-text">
+                                    <h4>Edit Profile</h4>
+                                    <p>Update your information</p>
+                                </div>
+                            </div>
+                            <span>→</span>
+                        </div>
+                        <div class="settings-item">
+                            <div class="settings-item-left">
+                                <div class="settings-icon">🌐</div>
+                                <div class="settings-text">
+                                    <h4>Language</h4>
+                                    <p>English</p>
+                                </div>
+                            </div>
+                            <span>→</span>
+                        </div>
+                    </div>
+
+                    <div class="settings-group">
+                        <div class="settings-item">
+                            <div class="settings-item-left">
+                                <div class="settings-icon">📶</div>
+                                <div class="settings-text">
+                                    <h4>Offline Mode</h4>
+                                    <p>Access cached content</p>
+                                </div>
+                            </div>
+                            <div class="toggle active" onclick="toggleOffline(this)"></div>
+                        </div>
+                        <div class="settings-item">
+                            <div class="settings-item-left">
+                                <div class="settings-icon">🔔</div>
+                                <div class="settings-text">
+                                    <h4>Notifications</h4>
+                                    <p>Scholarship & deadline alerts</p>
+                                </div>
+                            </div>
+                            <div class="toggle active" onclick="toggleSetting(this)"></div>
+                        </div>
+                        <div class="settings-item">
+                            <div class="settings-item-left">
+                                <div class="settings-icon">🌙</div>
+                                <div class="settings-text">
+                                    <h4>Dark Mode</h4>
+                                    <p>Reduce eye strain</p>
+                                </div>
+                            </div>
+                            <div class="toggle" onclick="toggleSetting(this)"></div>
+                        </div>
+                    </div>
+
+                    <div class="settings-group">
+                        <div class="settings-item">
+                            <div class="settings-item-left">
+                                <div class="settings-icon">🔒</div>
+                                <div class="settings-text">
+                                    <h4>Privacy & Security</h4>
+                                    <p>Data encryption enabled</p>
+                                </div>
+                            </div>
+                            <span>→</span>
+                        </div>
+                        <div class="settings-item">
+                            <div class="settings-item-left">
+                                <div class="settings-icon">📊</div>
+                                <div class="settings-text">
+                                    <h4>Data Sources</h4>
+                                    <p>Government verified databases</p>
+                                </div>
+                            </div>
+                            <span>→</span>
+                        </div>
+                    </div>
+
+                    <div class="settings-group">
+                        <div class="settings-item">
+                            <div class="settings-item-left">
+                                <div class="settings-icon">❓</div>
+                                <div class="settings-text">
+                                    <h4>Help & Support</h4>
+                                    <p>FAQs and contact us</p>
+                                </div>
+                            </div>
+                            <span>→</span>
+                        </div>
+                        <div class="settings-item">
+                            <div class="settings-item-left">
+                                <div class="settings-icon">ℹ️</div>
+                                <div class="settings-text">
+                                    <h4>About PathFinder</h4>
+                                    <p>Version 1.0.0 • SIH 2025</p>
+                                </div>
+                            </div>
+                            <span>→</span>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-outline" style="margin-top: 24px; margin-bottom: 80px;">
+                        Sign Out
+                    </button>
+                </div>
+            </div>
+
+            <div class="bottom-nav">
+                <div class="nav-item" onclick="navigateTo('dashboard')">
+                    <span class="icon">🏠</span>
+                    <span>Home</span>
+                </div>
+                <div class="nav-item" onclick="navigateTo('after12th')">
+                    <span class="icon">🎯</span>
+                    <span>Explore</span>
+                </div>
+                <div class="nav-item" onclick="navigateTo('scholarships')">
+                    <span class="icon">💰</span>
+                    <span>Benefits</span>
+                </div>
+                <div class="nav-item" onclick="navigateTo('skills')">
+                    <span class="icon">📚</span>
+                    <span>Skills</span>
+                </div>
+                <div class="nav-item active" onclick="navigateTo('settings')">
+                    <span class="icon">⚙️</span>
+                    <span>Settings</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Navigation
+        function navigateTo(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+            window.scrollTo(0, 0);
+            
+            // Update bottom nav active state
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+        }
+
+        // Language selection
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+        // Profile setup card selection
+        function selectCard(card) {
+            card.parentElement.querySelectorAll('.select-card').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+        }
+
+        // Chip toggle
+        function toggleChip(chip) {
+            chip.classList.toggle('selected');
+        }
+
+        // Settings toggle
+        function toggleSetting(toggle) {
+            toggle.classList.toggle('active');
+        }
+
+        // Offline mode toggle
+        function toggleOffline(toggle) {
+            toggle.classList.toggle('active');
+            const banner = document.getElementById('offlineBanner');
+            if (toggle.classList.contains('active')) {
+                banner.classList.add('show');
+            } else {
+                banner.classList.remove('show');
+            }
+        }
+
+        // Path card selection
+        document.querySelectorAll('.path-card').forEach(card => {
+            card.addEventListener('click', function() {
+                this.parentElement.querySelectorAll('.path-card').forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+        // Initialize
+        window.addEventListener('load', function() {
+            // Simulate offline detection (for demo)
+            // In real PWA, use: navigator.onLine
+            
+            // Add smooth scroll behavior
+            document.querySelectorAll('a, .card, .quick-action').forEach(element => {
+                element.style.cursor = 'pointer';
+            });
+        });
+
+        // PWA Service Worker registration (placeholder for actual implementation)
+        if ('serviceWorker' in navigator) {
+            // navigator.serviceWorker.register('/sw.js');
+            console.log('PWA Service Worker ready for registration');
+        }
+    </script>
+</body>
+</html>
